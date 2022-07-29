@@ -2,7 +2,6 @@ package blockchain
 
 import (
 	"fmt"
-	"math/big"
 )
 
 type Blockchain struct {
@@ -48,9 +47,8 @@ func (blockchain *Blockchain) Display(block_index int) {
 
 }
 
-func (blockchain *Blockchain) AddBlock(data []byte, nonce uint64, target big.Int, hash []byte){
-	prev_block_hash := blockchain.blocks[len(blockchain.blocks) - 1].Hash
-	blockchain.blocks = append(blockchain.blocks, CreateNewBlock(data, prev_block_hash, nonce, target, hash))
+func (blockchain *Blockchain) AddBlock(Block *Block){
+	blockchain.blocks = append(blockchain.blocks, Block)
 }
 
 func (blockchain *Blockchain) AddGenesisBlock() {
