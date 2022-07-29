@@ -8,7 +8,7 @@ import (
 
 func main()  {
 	mytarget := big.NewInt(1)
-	mytarget.Lsh(mytarget, uint(255 - 4))
+	mytarget.Lsh(mytarget, uint(255 - 2))
 	myblockchain := blockchain.CreateBlockchain()
 	myblockchain.Display(0)
 	myblockchain.AddBlock(blockchain.GenerateNewValidBlock(myblockchain, [] byte{0xab,0xcd,0x00}, *mytarget))

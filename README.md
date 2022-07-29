@@ -9,6 +9,8 @@ A blockchain is a structure that stores sequencial groups of data called blocks.
 <br></br>
 To create a new block, you generate the header and pass it through a hash function, starting with a value of 0 for the nonce. If the generated hash is smaller than the target, the hash is valid, otherwise it's not valid and u must regenerate the header with a different value of nonce and try again until you suceed. Therefore the target value determines how hard it is to generate new blocks.
 
+![sample](resources/sample.png)
+
 ## Features
 
 - Create Blocks
