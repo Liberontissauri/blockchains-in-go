@@ -35,7 +35,7 @@ func (blockchain *Blockchain) Display(block_index int) {
 		fmt.Printf("%x", hash_byte)
 	}
 	fmt.Printf("\n")
-	fmt.Printf("Target: %x", blockchain.blocks[block_index].Target.Bytes())
+	fmt.Printf("Target: %x", blockchain.blocks[block_index].Header.Target.Bytes())
 	fmt.Printf("\n")
 	fmt.Printf("Is Valid: ")
 	if(blockchain.blocks[block_index].isValid()) {
