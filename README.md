@@ -1,6 +1,6 @@
 ![thumbnail](./resources/thumb.png)
 
-# Golang Blochain 🔓
+# Golang Blockchain 🔓
 I wanted to get into Go development, but I wanted to start with something interesting so I could get up to speed while doing something useful. That's why I decided to try to implement blockchains in Go. The plan is to then use this knowledge to build something more useful.
 
 ## How does it work?
