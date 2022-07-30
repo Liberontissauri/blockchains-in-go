@@ -1,18 +1,18 @@
 package main
 
 import (
-	"math/big"
-
 	"github.com/liberontissauri/blockchains-in-go/blockchain"
 )
 
 func main()  {
-	mytarget := big.NewInt(1)
-	mytarget.Lsh(mytarget, uint(255 - 2))
 	myblockchain := blockchain.CreateBlockchain()
-	myblockchain.Display(0)
-	myblockchain.AddBlock(blockchain.GenerateNewValidBlock(myblockchain, [] byte{0xab,0xcd,0x00}, *mytarget))
-	myblockchain.Display(1)
-	myblockchain.AddBlock(blockchain.GenerateNewValidBlock(myblockchain, [] byte{0xef,0xaa,0x00}, *mytarget))
-	myblockchain.Display(2)
+	current_target := *myblockchain.CalculateTarget()
+	BLOCK_TARGET_UPDATE_RATE := 2
+	i := 0
+	for {
+		myblockchain.Display(i)
+		if(i % BLOCK_TARGET_UPDATE_RATE == 0) {current_target = *myblockchain.CalculateTarget()}
+		myblockchain.AddBlock(blockchain.GenerateNewValidBlock(myblockchain, [] byte{0xab,0xcd,0x00}, current_target))
+		i++
+	}
 }
