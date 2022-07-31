@@ -65,6 +65,10 @@ func (blockchain *Blockchain) GetBlock(block_index int) *Block {
 	return blockchain.blocks[block_index]
 }
 
+func (blockchain *Blockchain) GetTopBlock() *Block {
+	return blockchain.GetBlocks()[len(blockchain.GetBlocks())-1]
+}
+
 func (blockchain *Blockchain) CalculateTarget() *big.Int {
 	SEQUENCE_SIZE := 2
 
