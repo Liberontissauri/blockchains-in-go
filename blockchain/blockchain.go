@@ -57,6 +57,10 @@ func (blockchain *Blockchain) AddGenesisBlock() {
 	blockchain.blocks = append(blockchain.blocks, CreateGenesisBlock(500))
 }
 
+func (blockchain *Blockchain) GetBlocks() []*Block {
+	return blockchain.blocks
+}
+
 func (blockchain *Blockchain) CalculateTarget() *big.Int {
 	SEQUENCE_SIZE := 2
 
