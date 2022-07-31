@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/liberontissauri/blockchains-in-go/blockchain"
+	"github.com/Liberontissauri/blockchains-in-go/blockchain"
 )
 
 func main()  {
