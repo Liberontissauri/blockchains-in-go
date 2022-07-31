@@ -81,6 +81,10 @@ func (blockchain *Blockchain) GetCurrentTarget() *big.Int {
 	return blockchain.current_target
 }
 
+func (blockchain *Blockchain) RemoveTopBlock() {
+	blockchain.blocks = blockchain.blocks[:len(blockchain.blocks)-1]
+}
+
 func (blockchain *Blockchain) CalculateTarget() *big.Int {
 	current_block_sequence_number := math.Floor(float64(len(blockchain.blocks) / blockchain.mining_rate))
 	if(current_block_sequence_number == 0) {
