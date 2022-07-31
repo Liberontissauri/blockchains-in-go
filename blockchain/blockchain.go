@@ -8,10 +8,13 @@ import (
 
 type Blockchain struct {
 	blocks []*Block
+	mining_rate int
+	update_period float64
+	current_target *big.Int
 }
 
-func CreateBlockchain() *Blockchain{
-	blockchain := &Blockchain{}
+func CreateBlockchain(mining_rate int, update_period float64) *Blockchain{
+	blockchain := &Blockchain{mining_rate: mining_rate, update_period: update_period}
 	blockchain.AddGenesisBlock()
 	return blockchain
 }
@@ -50,10 +53,14 @@ func (blockchain *Blockchain) Display(block_index int) {
 }
 
 func (blockchain *Blockchain) AddBlock(Block *Block){
+	if(len(blockchain.GetBlocks()) % blockchain.mining_rate == 0) {
+		blockchain.current_target = blockchain.CalculateTarget()
+	}
 	blockchain.blocks = append(blockchain.blocks, Block)
 }
 
 func (blockchain *Blockchain) AddGenesisBlock() {
+	blockchain.current_target = blockchain.CalculateTarget()
 	blockchain.blocks = append(blockchain.blocks, CreateGenesisBlock(500))
 }
 
@@ -69,21 +76,23 @@ func (blockchain *Blockchain) GetTopBlock() *Block {
 	return blockchain.GetBlocks()[len(blockchain.GetBlocks())-1]
 }
 
-func (blockchain *Blockchain) CalculateTarget() *big.Int {
-	SEQUENCE_SIZE := 2
+func (blockchain *Blockchain) GetCurrentTarget() *big.Int {
+	return blockchain.current_target
+}
 
-	current_block_sequence_number := math.Floor(float64(len(blockchain.blocks) / SEQUENCE_SIZE))
+func (blockchain *Blockchain) CalculateTarget() *big.Int {
+	current_block_sequence_number := math.Floor(float64(len(blockchain.blocks) / blockchain.mining_rate))
 	if(current_block_sequence_number == 0) {
 		target := big.NewInt(1)
 		target.Lsh(target, uint(255))
 		return target
 	}
-	start_sequence_block := blockchain.blocks[(int(current_block_sequence_number - 1) * SEQUENCE_SIZE)]
-	end_sequence_block := blockchain.blocks[(int(current_block_sequence_number) * SEQUENCE_SIZE - 1)]
+	start_sequence_block := blockchain.blocks[(int(current_block_sequence_number - 1) * blockchain.mining_rate)]
+	end_sequence_block := blockchain.blocks[(int(current_block_sequence_number) * blockchain.mining_rate - 1)]
 
 	completion_time := end_sequence_block.Header.Timestamp - start_sequence_block.Header.Timestamp
 
-	var ratio float64 = float64(completion_time) / (60 * 10 * float64(SEQUENCE_SIZE))
+	var ratio float64 = float64(completion_time) / (blockchain.update_period * float64(blockchain.mining_rate))
 	if (ratio > 4) {ratio = 4}
 	if (ratio < 0.25) {ratio = 0.25}
 
