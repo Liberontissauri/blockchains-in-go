@@ -1,6 +1,7 @@
 package blockchain
 
 import (
+	"bytes"
 	"fmt"
 	"math"
 	"math/big"
@@ -102,4 +103,29 @@ func (blockchain *Blockchain) CalculateTarget() *big.Int {
 
 	final_target_int, _ := final_target.Int(nil)
 	return final_target_int
+}
+
+func (blockchain *Blockchain) ValidateBlockchain() bool {
+	for i := 0; i < len(blockchain.blocks); i++ {
+		if(!blockchain.blocks[i].IsValid()) {
+			return false
+		}
+		if(i != 0) {
+			if(bytes.Compare(blockchain.blocks[i].Header.PrevHash, blockchain.blocks[i-1].Hash) != 0) {
+				return false
+			}
+			if(blockchain.blocks[i].Header.Timestamp < blockchain.blocks[i-1].Header.Timestamp) {
+				return false
+			}
+		}
+		if(i != len(blockchain.blocks) - 1) {
+			if(bytes.Compare(blockchain.blocks[i].Hash, blockchain.blocks[i+1].Header.PrevHash) != 0) {
+				return false
+			}
+			if(blockchain.blocks[i].Header.Timestamp > blockchain.blocks[i+1].Header.Timestamp) {
+				return false
+			}
+		}
+	}
+	return true
 }
